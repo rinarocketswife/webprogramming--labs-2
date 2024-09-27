@@ -48,22 +48,22 @@ def lab1():
         называемых микрофреймворков — минималистичных каркасов веб-приложений, сознательно предоставляющих лишь самые базовые возможности.
         </p>
 
-        <nav>
+        <p>
             <ul>
                 <li><a href="/menu">Меню</a></li>
             </ul>
-        </nav>
+        </p>
 
         <h2>Реализованные роуты</h2>
 
-        <nav>
+        <p>
             <ul>
                 <li><a href="/lab1/oak">Дуб</a></li>
                 <li><a href="/lab1/student">Студент</a></li>
                 <li><a href="/lab1/python">Python</a></li>
                 <li><a href="/lab1/personal">Personal</a></li>
             </ul>
-        </nav>
+        </p>
 
         <footer>
             &copy; Ирина Проскурякова, ФБИ-24, 3 курс, 2024
