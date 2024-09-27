@@ -2,28 +2,22 @@ from flask import Flask
 app = Flask(__name__)
 
 @app.route("/")
-@app.route("/web")
-def web():
-    return """<!docktype html> 
-        <html> 
-           <body>
-               <h1>web-сервер на flask</h1>
-               <a href="/author">author</a>
-           <body>
-        </html>"""
+def start():
+    return """
+<!docktype html> 
+<html> 
+    <head>
+        <title>Проскурякова Ирина Дмитриевна, Лабораторная 1</title>
+    </head>
+    <body>
+        <header>
+            НГТУ, ФБ, Лабораторная работа 1
+        </header>
 
-@app.route("/author")
-def author():
-    name = "Проскурякова Ирина Дмитриевна"
-    group = "ФБИ-24"
-    faculty = "ФБ"
+        <h1>web-сервер на flask</h1>
 
-    return """<!docktype html> 
-        <html> 
-           <body>
-               <p>Студент: """ + name + """</p>
-               <p>Группа: """ + group + """</p>
-               <p>Факультет: """ + faculty + """</p>
-               <a href="/web">web</a>
-           <body>
-        </html>"""
+        <footer>
+            &copy; Ирина Проскурякова, ФБИ-24, 3 курс, 2024
+        </footer> 
+</html>
+"""
