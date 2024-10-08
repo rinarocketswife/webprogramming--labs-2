@@ -152,3 +152,20 @@ def personal():
     </body>
 </html>
 '''
+
+# @app.route('/lab2/a')
+# def a():
+#      return 'без слэша'
+
+# @app.route('/lab2/a/')
+# def a():
+#      return 'со слэшем'
+
+flower_list = ('роза', 'тюльпан', 'незабудка', 'ромашка')
+
+@app.route('/lab2/flowers/<int:flower_id>')
+def flowers(flower_id):
+     if flower_id >= len(flower_list):
+          return "такого цветка нет", 404
+     else:
+        return "цветок: " + flower_list[flower_id]
