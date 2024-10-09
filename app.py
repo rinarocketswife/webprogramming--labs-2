@@ -184,4 +184,9 @@ def example():
      number = '2'
      group = 'ФБИ-24'
      course = '3'
-     return render_template('example.html', name=name, number=number, group=group, course=course)
+     result = 5 + 2
+     result1 = 11 * 28
+     result2 = 3258 - 759
+     result3 = 8452/793
+     result4 = 45 ** 8
+     return render_template('example.html', name=name, number=number, group=group, course=course, result=result, result1=result1, result2=result2, result3=result3, result4=result4)
