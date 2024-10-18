@@ -243,3 +243,29 @@ def lab2():
 def filters():
      phrase = "0 <b>сколько</b> <u>нам</u> <i>открытий</i> чудных..."
      return render_template('filter.html', phrase = phrase)
+
+@app.route('/lab2/calc/<int:a>')
+def redirect_to_default_with_a(a):
+    return redirect(url_for('calculate', num1=a, num2=1))
+
+@app.route('/lab2/calc/')
+def redirect_to_default():
+    return redirect(url_for('calculate', num1=1, num2=1))
+
+@app.route('/lab2/calc/<int:num1>/<int:num2>')
+def calculate(num1, num2):
+    result1 = num1 + num2
+    result2 = num1 - num2
+    result3 = num1 * num2
+    result4 = num1 / num2 if num2 != 0 else "Деление на ноль!"
+    result5 = num1 ** num2
+
+    response = f"""
+    Сумма: {num1} + {num2} = {result1}<br>
+    Разность: {num1} - {num2} = {result2}<br>
+    Произведение: {num1} * {num2} = {result3}<br>
+    Деление: {num1} / {num2} = {result4}<br>
+    Возведение в степень: {num1}<sup>{num2}</sup> = {result5}
+    """
+
+    return response
