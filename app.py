@@ -269,3 +269,21 @@ def calculate(num1, num2):
     """
 
     return response
+
+books = [
+    {"author": "Джордж Оруэлл", "title": "1984", "genre": "Научная фантастика", "pages": 328},
+    {"author": "Рэй Брэдбери", "title": "451 градус по Фаренгейту", "genre": "Научная фантастика", "pages": 158},
+    {"author": "Федор Достоевский", "title": "Преступление и наказание", "genre": "Роман", "pages": 671},
+    {"author": "Стивен Кинг", "title": "11/22/63", "genre": "Роман", "pages": 700},
+    {"author": "Михаил Булгаков", "title": "Мастер и Маргарита", "genre": "Фантастика", "pages": 480},
+    {"author": "Энтони Берджесс", "title": "Заводной апельсин", "genre": "Роман", "pages": 480},
+    {"author": "Габриэль Гарсиа Маркес", "title": "Сто лет одиночества", "genre": "Магический реализм", "pages": 448},
+    {"author": "Лев Толстой", "title": "Война и мир", "genre": "Исторический роман", "pages": 1440},
+    {"author": "Виктор Гюго", "title": "Отверженные", "genre": "Роман", "pages": 1900},
+    {"author": "Джером Д. Сэлинджер", "title": "Над пропастью во ржи", "genre": "Роман", "pages": 277},
+]
+
+@app.route('/lab2/books')
+def show_books():
+    return render_template('books.html', books=books)
+
