@@ -4,8 +4,16 @@
 
 {% block main %}
     <h1>Формы, cookie</h1>
+    <div>
+        Привет, <span style="color: {{name_color}}">{{ name }}</span>!
+    </div>
+        Возраст: {{ age }}
     <div>Список сделанных страниц:</div>
     <ol>
         <li><a href="/lab3/cookie">Куки</a></li>
+        <li><a href="/lab3/del_cookie">Очистка Куки</a></li>
+        <li><a href="/lab3/form1">Форма</a></li>
+        <li><a href="/lab3/pay">Заказ напитка</a></li>
+        <li><a href="/lab3/settings">Цветы</a></li>
     </ol>
 {% endblock %}
