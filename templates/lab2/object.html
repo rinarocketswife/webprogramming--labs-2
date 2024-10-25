@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Список объектов</title>
+    <style>
+        .object {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        .object img {
+            width: 150px;
+            height: 150px;
+            margin-right: 20px;
+        }
+        .object .description {
+            flex-grow: 1;
+        }
+    </style>
+</head>
+<body>
+    <h1>Список объектов</h1>
+    {% for obj in objects %}
+    <div class="object">
+        <img src="{{ url_for('static', filename=obj.image) }}" alt="{{ obj.name }}">
+        <div class="description">
+            <h2>{{ obj.name }}</h2>
+            <p>{{ obj.description }}</p>
+        </div>
+    </div>
+    {% endfor %}
+</body>
+</html>
