@@ -127,48 +127,6 @@ def tree():
 
     return redirect('/lab4/tree')
 
-# users = [
-#     {'login': 'alex', 'password': '123'},
-#     {'login': 'bob', 'password': '555'},
-#     {'login': 'fred', 'password': '111'},
-#     {'login': 'rick', 'password': '222'},
-# ]
-
-# @lab4.route('/lab4/login', methods = ['GET', 'POST'])
-# def login():
-#     if request.method == 'GET':
-#         if 'login' in session:
-#             authorized = True
-#             login = session['login']
-#         else:
-#             authorized = False
-#             login = ''
-#         return render_template('lab4/login.html', authorized=authorized, login=login)
-    
-#     login = request.form.get('login')
-#     password = request.form.get('password')
-
-#     if not login:
-#         error = 'Не введён логин'
-#         return render_template('lab4/login.html', error=error, authorized=False, login=login)
-    
-#     if not password:
-#         error = 'Не введён пароль'
-#         return render_template('lab4/login.html', error=error, authorized=False, login=login)
-
-#     for user in users:
-#         if login == user['login'] and password == user['password']:
-#             session['login'] = login
-#             return redirect('lab4/login')
-    
-#     error = 'Неверный логин и/или пароль'
-#     return render_template('lab4/login.html', error=error, authorizes=False, login=login)
-
-# # @lab4.route('/lab4/logout', methods = ['POST'])
-# # def logout():
-# #     session.pop('login', None)
-# #     return redirect('lab4/login')
-
 users = [
     {'login': 'alex', 'password': '123', 'name': 'Alex', 'sex': 'male'},
     {'login': 'bob', 'password': '555', 'name': 'Bob', 'sex': 'male'},
@@ -203,6 +161,7 @@ def login():
     for user in users:
         if login == user['login'] and password == user['password']:
             session['login'] = login
+            session['name'] = user['name']
             return redirect('lab4/login')
     
     error = 'Неверный логин и/или пароль'
@@ -212,3 +171,146 @@ def login():
 def logout():
     session.pop('login', None)
     return redirect('/lab4/login')
+
+@lab4.route('/lab4/fridge', methods=['GET', 'POST'])
+def fridge():
+    if request.method == 'POST':
+        temperature = request.form.get('temperature')
+
+        if not temperature:
+            error = 'Ошибка: не задана температура'
+            return render_template('lab4/fridge.html', error=error)
+
+        temperature = float(temperature)
+
+        if temperature < -12:
+            error = 'Не удалось установить температуру — слишком низкое значение'
+            return render_template('lab4/fridge.html', error=error)
+
+        if temperature > -1:
+            error = 'Не удалось установить температуру — слишком высокое значение'
+            return render_template('lab4/fridge.html', error=error)
+
+        if -12 <= temperature <= -9:
+            message = f'Установлена температура: {temperature}°С'
+            snowflakes = '❄️❄️❄️'
+        elif -8 <= temperature <= -5:
+            message = f'Установлена температура: {temperature}°С'
+            snowflakes = '❄️❄️'
+        elif -4 <= temperature <= -1:
+            message = f'Установлена температура: {temperature}°С'
+            snowflakes = '❄️'
+
+        return render_template('lab4/fridge.html', message=message, snowflakes=snowflakes)
+
+    return render_template('lab4/fridge.html')
+
+@lab4.route('/lab4/grain', methods=['GET', 'POST'])
+def grain():
+    if request.method == 'POST':
+        grain_type = request.form.get('grain_type')
+        weight = request.form.get('weight')
+
+        if not weight:
+            error = 'Ошибка: не указан вес'
+            return render_template('lab4/grain.html', error=error)
+
+        weight = float(weight)
+
+        if weight <= 0:
+            error = 'Ошибка: вес должен быть больше 0'
+            return render_template('lab4/grain.html', error=error)
+
+        if weight > 500:
+            error = 'Ошибка: такого объёма сейчас нет в наличии'
+            return render_template('lab4/grain.html', error=error)
+
+        prices = {
+            'ячмень': 12345,
+            'овёс': 8522,
+            'пшеница': 8722,
+            'рожь': 14111
+        }
+
+        if grain_type not in prices:
+            error = 'Ошибка: неверный тип зерна'
+            return render_template('lab4/grain.html', error=error)
+
+        price_per_ton = prices[grain_type]
+        total_cost = price_per_ton * weight
+
+        if weight > 50:
+            discount = total_cost * 0.1
+            total_cost -= discount
+            discount_message = f'Применена скидка за большой объём: {discount} руб'
+        else:
+            discount_message = ''
+
+        message = f'Заказ успешно сформирован. Вы заказали {grain_type}. Вес: {weight} т. Сумма к оплате: {total_cost} руб'
+        return render_template('lab4/grain.html', message=message, discount_message=discount_message)
+
+    return render_template('lab4/grain.html')
+
+@lab4.route('/lab4/register', methods=['GET', 'POST'])
+def register():
+    if request.method == 'POST':
+        login = request.form.get('login')
+        password = request.form.get('password')
+        name = request.form.get('name')
+        gender = request.form.get('gender')
+
+        if not login or not password or not name or not gender:
+            error = 'Ошибка: все поля должны быть заполнены'
+            return render_template('lab4/register.html', error=error)
+
+        for user in users:
+            if login == user['login']:
+                error = 'Ошибка: логин уже занят'
+                return render_template('lab4/register.html', error=error)
+
+        users.append({'login': login, 'password': password, 'name': name, 'gender': gender})
+        return redirect('/lab4/login')
+
+    return render_template('lab4/register.html')
+
+@lab4.route('/lab4/users')
+def users_list():
+    if 'login' not in session:
+        return redirect('/lab4/login')
+
+    return render_template('lab4/users.html', users=users)
+
+@lab4.route('/lab4/delete_user', methods=['POST'])
+def delete_user():
+    if 'login' not in session:
+        return redirect('/lab4/login')
+
+    login = session['login']
+    users[:] = [user for user in users if user['login'] != login]
+    session.pop('login', None)
+    session.pop('name', None)
+    return redirect('/lab4/login')
+
+@lab4.route('/lab4/edit_user', methods=['GET', 'POST'])
+def edit_user():
+    if 'login' not in session:
+        return redirect('/lab4/login')
+
+    login = session['login']
+    user = next((user for user in users if user['login'] == login), None)
+
+    if request.method == 'POST':
+        new_password = request.form.get('new_password')
+        new_name = request.form.get('new_name')
+        new_gender = request.form.get('new_gender')
+
+        if new_password:
+            user['password'] = new_password
+        if new_name:
+            user['name'] = new_name
+        if new_gender:
+            user['gender'] = new_gender
+
+        return redirect('/lab4/users')
+
+    return render_template('lab4/edit_user.html', user=user)
