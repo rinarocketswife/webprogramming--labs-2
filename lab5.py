@@ -85,8 +85,27 @@ def register():
 
 @lab5.route('/lab5/list')
 def list():
-    return render_template('lab5/list.html')  # Исправлено: указываем правильный путь к шаблону
+    login = session.get('username')
+    if not login:
+        return redirect('/lab5/login')
+    
+    conn, cur = db_connect()
 
+    cur.execute("SELECT id FROM users WHERE login=%s;", (login,))
+    login_id = cur.fetchone()["id"]
+
+    cur.execute("""
+        SELECT * FROM articles 
+        WHERE login_id=%s 
+        ORDER BY is_favorite DESC, id ASC;
+    """, (login_id,))
+    articles = cur.fetchall()
+
+    db_close(conn, cur)
+
+    no_articles = len(articles) == 0
+
+    return render_template('/lab5/articles.html', articles=articles, no_articles=no_articles)
 @lab5.route('/lab5/create', methods=['GET', 'POST'])
 def create():
     login = session.get('username')
