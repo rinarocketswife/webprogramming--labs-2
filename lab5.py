@@ -39,7 +39,7 @@ def login():
     try:
         conn, cur = db_connect()
 
-        cur.execute("SELECT * FROM users WHERE login=%s;", (login,))
+        cur.execute("SELECT * FROM users WHERE login=%s;", (login, ))
         user = cur.fetchone()
 
         if not user:
@@ -51,7 +51,7 @@ def login():
             return render_template('lab5/login.html', error='Логин и/или пароль неверны')
         
         db_close(conn, cur)
-        session['username'] = login  # Исправлено: используем 'username'
+        session['username'] = login  
         return render_template('lab5/success_login.html', login=login)
     except Exception as e:
         return render_template('lab5/login.html', error=f"Ошибка при подключении к базе данных: {str(e)}")
@@ -106,6 +106,7 @@ def list():
     no_articles = len(articles) == 0
 
     return render_template('/lab5/articles.html', articles=articles, no_articles=no_articles)
+
 @lab5.route('/lab5/create', methods=['GET', 'POST'])
 def create():
     login = session.get('username')
