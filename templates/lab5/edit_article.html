@@ -4,18 +4,30 @@
 
 {% block main %}
 
-    <div class="container">
-        <div class="menu">
-            <a href="{{ url_for('lab5.list') }}">Список статей</a>
-            <a href="{{ url_for('lab5.create') }}">Создать статью</a>
-            <a href="{{ url_for('lab5.login') }}">Войти</a>
-            <a href="{{ url_for('lab5.register') }}">Регистрация</a>
-            <a href="{{ url_for('lab5.logout') }}">Выйти</a>
-            <a href="{{ url_for('lab5.users') }}">Список пользователей</a>
-            <a href="{{ url_for('lab5.public_articles') }}">Публичные статьи</a>
+    <h1>Редактирование статьи</h1>
+
+    {% if error %}
+        <div style="color: red;">{{ error }}</div>
+    {% endif %}
+
+    <form method="post">
+        <div>
+            <label>
+                Тема: <input type="text" maxlength="50" name="title" value="{{ article['title'] }}">
+            </label>
         </div>
-        <div class="username">
-            {{ username if username else 'Anonymous' }}
+
+        <div>
+            <label>
+                Текст статьи:
+                <textarea name="article_text">{{ article['article_text'] }}</textarea>
+            </label>
+        </div>  
+
+        <div>
+            <button type="submit">Сохранить изменения</button>
         </div>
-    </div>
+
+    </form>
+
 {% endblock %}
