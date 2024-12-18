@@ -6,7 +6,13 @@
 
     <div class="container">
         <div class="menu">
+            <a href="{{ url_for('lab5.list') }}">Список статей</a>
+            <a href="{{ url_for('lab5.create') }}">Создать статью</a>
+            <a href="{{ url_for('lab5.login') }}">Войти</a>
             <a href="{{ url_for('lab5.register') }}">Регистрация</a>
+            <a href="{{ url_for('lab5.logout') }}">Выйти</a>
+            <a href="{{ url_for('lab5.users') }}">Список пользователей</a>
+            <a href="{{ url_for('lab5.public_articles') }}">Публичные статьи</a>
         </div>
         <div class="username">
             {{ username if username else 'Anonymous' }}
