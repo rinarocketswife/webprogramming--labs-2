@@ -6,9 +6,47 @@
 
     <h1>Статьи</h1>
 
-    {% for article in articles %}
-        <h2>{{ article['title'] }}</h2>
-        <blockquote>{{ article['article_text'] }}</blockquote>
-    {% endfor %}
+    {% if no_articles %}
+        <p>У вас пока нет ни одной статьи.</p>
+    {% else %}
+        {% for article in articles %}
+            <h2>
+                {{ article['title'] }}
+                {% if article['is_favorite'] %}
+                    <span style="color: red;">(Любимая)</span>
+                {% endif %}
+                {% if article['is_public'] %}
+                    <span style="color: green;">(Публичная)</span>
+                {% endif %}
+            </h2>
+            <blockquote>{{ article['article_text'] }}</blockquote>
+
+            <a href="{{ url_for('lab5.edit_article', article_id=article['id']) }}">Редактировать</a>
+  
+            <form action="{{ url_for('lab5.delete_article', article_id=article['id']) }}" method="post" style="display:inline;">
+                <button type="submit" onclick="return confirm('Вы уверены, что хотите удалить эту статью?')">Удалить</button>
+            </form>
+         
+            <form action="{{ url_for('lab5.toggle_favorite', article_id=article['id']) }}" method="post" style="display:inline;">
+                <button type="submit">
+                    {% if article['is_favorite'] %}
+                        Убрать из любимых
+                    {% else %}
+                        Добавить в любимые
+                    {% endif %}
+                </button>
+            </form>
+           
+            <form action="{{ url_for('lab5.toggle_public', article_id=article['id']) }}" method="post" style="display:inline;">
+                <button type="submit">
+                    {% if article['is_public'] %}
+                        Сделать непубличной
+                    {% else %}
+                        Сделать публичной
+                    {% endif %}
+                </button>
+            </form>
+        {% endfor %}
+    {% endif %}
 
 {% endblock %}
