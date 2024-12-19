@@ -14,8 +14,8 @@ def index():
 def db_connect():
     conn = psycopg2.connect(
         host='127.0.0.1',
-        database='vladislav_pechenkin_knowledge_base',
-        user='vladislav_pechenkin_knowledge_base',
+        database='irina_proskuryakova_knowledge_base',
+        user='irina_proskuryakova_knowledge_base',
         password='123'
     )
     cur = conn.cursor(cursor_factory=RealDictCursor)
