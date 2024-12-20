@@ -6,7 +6,6 @@ lab7 = Blueprint('lab7', __name__)
 def main():
     return render_template('lab7/index.html')
 
-
 films = [
     {
         "title": "Prometheus",
@@ -52,9 +51,7 @@ def get_film(id):
 
 @lab7.route('/lab7/rest-api/films/<int:id>', methods=['DELETE'])
 def del_film(id):
-    if id < 0 or id > 4:
-        return jsonify({"error": "Invalid film ID"}), 400
-    if id >= len(films):
+    if id < 0 or id >= len(films):
         return jsonify({"error": "Film not found"}), 404
     del films[id]
     return '', 204
@@ -64,12 +61,26 @@ def put_film(id):
     if id < 0 or id >= len(films):
         return jsonify({"error": "Film not found"}), 404
     film = request.get_json()
+
+    # Если оригинальное название пустое, заполняем его русским названием
+    if not film.get('title'):
+        film['title'] = film['title_ru']
+
+    # Проверка на пустое описание
+    if not film.get('description'):
+        return jsonify({"error": "Description cannot be empty"}), 400
+
     films[id] = film
     return jsonify(films[id])
 
-@lab7.roue('/lab7/rest-api/films/', methods=['POST'])
+@lab7.route('/lab7/rest-api/films/', methods=['POST'])
 def add_film():
     new_film = request.get_json()
+
+    # Если оригинальное название пустое, заполняем его русским названием
+    if not new_film.get('title'):
+        new_film['title'] = new_film['title_ru']
+
     films.append(new_film)
     new_film_id = len(films) - 1
     return jsonify({"message": "Film added", "id": new_film_id}), 201
