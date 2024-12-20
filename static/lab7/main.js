@@ -65,3 +65,43 @@ function editFilm(index) {
 function deleteFilm(index) {
     console.log('Удаление фильма с индексом:', index);
 }
+
+function showModal() {
+    document.querySelector('div.modal').computedStyleMap.display = 'block';
+}
+function hideModal() {
+    document.querySelector('div.modal').computedStyleMap.display = 'none';
+}
+function cancel() {
+    hideModal();
+}
+function addFilm(){
+    document.getElementById('id').value = '';
+    document.getElementById('title').value = '';
+    document.getElementById('title-ru').value = '';
+    document.getElementById('year').value = '';
+    document.getElementById('description').value = '';
+    showModal();
+}
+
+function sendFilm() {
+    const film = {
+        title: document.getElementById('title').value,
+        title_ru: document.getElementById('title-ru').value,
+        year: document.getElementById('year').value,
+        description: document.getElementById('description').value,
+    }
+
+    const url = '/lab7/rest-api/films/';
+    const method = 'POST';
+    
+    fetch(url, {
+        method: method,
+        headers: {"Contetnt-Type": "application/json"},
+        body: JSON.stringify(film)
+    })
+    .then(function() {
+        fillFilmList();
+        hideModal();
+    });
+}
