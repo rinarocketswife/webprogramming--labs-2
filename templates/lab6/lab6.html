@@ -22,17 +22,70 @@ function getOfficeList() {
     .then(function(data) {
         const office_list = data.result;
         const ul = document.getElementById('office-list');
+        ul.innerHTML = ''; // Очищаем список перед обновлением
+        let totalCost = 0; // Переменная для подсчета общей стоимости
+
         for(let i = 0; i < office_list.length; i++) {
             const office = office_list[i];
             const li = document.createElement('li');
-            li.innerText = `${office.number}: ${office.tenant || 'свободен'}`;
+            li.innerText = `${office.number}: ${office.tenant || 'свободен'}, стоимость: ${office.price} руб.`;
 
             const bookingButton = document.createElement('button');
             bookingButton.innerText = 'зарезервировать';
-            bookingButton.onclick = function() {booking(office.number)};
+            bookingButton.onclick = function() { booking(office.number) };
             li.appendChild(bookingButton);
 
             ul.appendChild(li);
+
+            // Если офис зарезервирован, добавляем его стоимость к общей сумме
+            if (office.tenant) {
+                totalCost += office.price;
+            }
+        }
+
+        // Отображаем общую стоимость арендованных офисов
+        const totalCostElement = document.getElementById('total-cost');
+        totalCostElement.innerText = `Общая стоимость аренды: ${totalCost} руб.`;
+    })
+    .catch(function(error) {
+        console.error('Ошибка:', error);
+    });
+}
+
+function booking(officeNumber) {
+    const url = '/lab6/json-rpc-api';
+    const json = {
+        'jsonrpc': '2.0',
+        'method': 'booking',
+        'params': officeNumber,
+        'id': Math.round(Math.random() * 1000)
+    };
+    fetch(url, {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify(json)
+    })
+    .then(function(response) {
+        return response.json();
+    })
+    .then(function(data) {
+        if (data.error) {
+            switch (data.error.code) {
+                case 1:
+                    alert('Вы не авторизованы, пожалуйста, авторизуйтесь');
+                    break;
+                case 2:
+                    alert('Офис уже зарезервирован');
+                    break;
+                case -32601:
+                    alert('Странная ошибка');
+                    break;
+                default:
+                    alert('Произошла ошибка: ' + data.error.message);
+            }
+        } else {
+            alert('Офис успешно зарезервирован!');
+            getOfficeList(); // Обновляем список кабинетов
         }
     })
     .catch(function(error) {
@@ -40,51 +93,64 @@ function getOfficeList() {
     });
 }
 
-function booking (officeNumber) {
-    const url = '/lab6/json-rpc-api';
-    const json = {
-        'jsonrpc': '2.0',
-        'method': 'booking',
-        'params': officeNumber,
-        'id': Math.round(Math.random()*1000)
-    };
-    fetch(url, {
-        method: 'POST',
-        headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify(json)
-    })
-    .then(function(responce) {
-        return responce.json()
-    })
-    .then(function(data){
-        if(data.error) {
-            switch(data.error.code) {
-                case 1: 
-                    alert('Вы не авторизованы, пожалуйста, авторизируйтесь');
-                    break;
-                case 2: 
-                    alert('Офис уже арендуетя');
-                    break;
-                case -32601:
-                    alert('Странная ошибка');
-                    break;
-            }
-        }
-        else{
-            document.getElementById('office-list').innerHTML = '';
-            getOfficeList();
-        }
-    })
-
-}
-
 document.addEventListener('DOMContentLoaded', function() {
     getOfficeList();
 });
 </script>
+
+<style>
+    #office-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    #office-list li {
+        background-color: #f9f9f9;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        margin-bottom: 10px;
+        padding: 15px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-size: 16px;
+        color: #333;
+    }
+
+    #office-list li button {
+        background-color: #2196f3;
+        border: none;
+        border-radius: 4px;
+        color: #fff;
+        padding: 10px 15px;
+        cursor: pointer;
+        font-size: 14px;
+        transition: background-color 0.3s ease;
+    }
+
+    #office-list li button:hover {
+        background-color: #1976d2;
+    }
+
+    #total-cost {
+        margin-top: 20px;
+        font-size: 18px;
+        font-weight: bold;
+        color: #333;
+        text-align: center;
+    }
+
+    h1 {
+        text-align: center;
+        color: #333;
+        margin-bottom: 20px;
+    }
+</style>
 {% endblock %}
 
 {% block main %}
     <h1>Список кабинетов</h1>
     <ul id="office-list"></ul>
+    <p id="total-cost">Общая стоимость аренды: 0 руб.</p>
 {% endblock %}
