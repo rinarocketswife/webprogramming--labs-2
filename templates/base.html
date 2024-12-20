@@ -6,6 +6,7 @@
     <title>Ирина Проскурякова. {% block lab %}{% endblock %}</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='/lab1/main.css') }}">
     <link rel="icon" href="{{ url_for('static', filename='/lab1/favicon.ico') }}" type="image/x-icon">
+    {% block script %}{% endblock %}
 </head>
 <body>
     <header>
