@@ -17,6 +17,9 @@
     position: absolute;
     padding: 20px;
 }
+.error-message {
+    color: red;
+}
 </style>
 {% endblock %}
 
@@ -26,7 +29,8 @@
     <table>
         <thead>
             <tr>
-                <th colspan="2">Название</th>
+                <th>Название (русское)</th>
+                <th>Название (оригинальное)</th>
                 <th>Год</th>
                 <th>Действие</th>
             </tr>
@@ -63,6 +67,10 @@
         <label>
             Описание:
             <textarea id="description"></textarea>
+            <div id="description-error" class="error-message"></div>
         </label><br>
+
+        <button onclick="sendFilm()">OK</button>
+        <button onclick="cancel()">Отмена</button>
     </div>
 {% endblock %}
