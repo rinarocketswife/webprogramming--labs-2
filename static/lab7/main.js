@@ -11,27 +11,27 @@ function fillFilmList() {
             let tr = document.createElement('tr'); // Создаем строку
 
             // Создаем ячейки
-            let tdTitle = document.createElement('td');
             let tdTitleRus = document.createElement('td');
+            let tdTitle = document.createElement('td');
             let tdYear = document.createElement('td');
             let tdActions = document.createElement('td');
 
             // Заполняем ячейки данными
-            tdTitle.innerText = films[i].title == films[i].title_ru ? '' : films[i].title;
-            tdTitleRus.innerText = films[i].title_ru;
+            tdTitleRus.innerText = films[i].title_ru; // Русское название
+            tdTitle.innerHTML = `<i>(${films[i].title})</i>`; // Оригинальное название в скобках и курсивом
             tdYear.innerText = films[i].year;
 
             // Создаем кнопки
             let editButton = document.createElement('button');
             editButton.innerText = 'редактировать';
             editButton.addEventListener('click', function() {
-                editFilm(films[i].id); // Передаем ID фильма
+                editFilm(i); // Передаем ID фильма
             });
 
             let delButton = document.createElement('button');
             delButton.innerText = 'удалить';
             delButton.onclick = function() {
-                deleteFilm(films[i].id, films[i].title_ru); // Передаем ID и название фильма
+                deleteFilm(i, films[i].title_ru); // Передаем ID и название фильма
             };
 
             // Добавляем кнопки в ячейку действий
@@ -39,8 +39,8 @@ function fillFilmList() {
             tdActions.append(delButton);
 
             // Добавляем ячейки в строку
-            tr.append(tdTitle);
             tr.append(tdTitleRus);
+            tr.append(tdTitle);
             tr.append(tdYear);
             tr.append(tdActions);
 
@@ -113,7 +113,7 @@ function sendFilm() {
 
     fetch(url, {
         method: method,
-        headers: { "Content-Type": "application/json" }, // Исправлена опечатка
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(film)
     })
     .then(function(response) {
