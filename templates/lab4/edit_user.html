@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block lab %}Лабораторная работа 4{% endblock %}
+
+{% block main %}
+    <h1>Редактирование данных</h1>
+    <form method="post">
+        <label for="new_password">Новый пароль:</label>
+        <input type="password" id="new_password" name="new_password">
+        <br>
+        <label for="new_name">Новое имя:</label>
+        <input type="text" id="new_name" name="new_name" value="{{ user['name'] }}">
+        <br>
+        <label for="new_gender">Новый пол:</label>
+        <select id="new_gender" name="new_gender">
+            <option value="male" {% if user[gender] == 'male' %}selected{% endif %}>Мужской</option>
+            <option value="female" {% if user[gender] == 'female' %}selected{% endif %}>Женский</option>
+        </select>
+        <br>
+        <button type="submit">Сохранить изменения</button>
+    </form>
+{% endblock %}

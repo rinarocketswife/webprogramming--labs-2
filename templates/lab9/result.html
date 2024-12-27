@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>С Новым Годом!</title>
+    <style>
+        body {
+            background-image: url("{{ url_for('static', filename='images/new_year_background.jpg') }}");
+            background-size: cover;
+            background-position: center;
+            font-family: 'Arial', sans-serif;
+            text-align: center;
+            color: rgb(152, 238, 118);
+        }
+        h1 {
+            color: #ffd700; /* Золотой */
+        }
+        p {
+            color: #c62828; /* Красный */
+        }
+        img {
+            border: 5px solid #2e7d32; /* Зеленый */
+            border-radius: 10px;
+            margin-top: 20px;
+        }
+        .snowflakes {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1000;
+        }
+        .snowflake {
+            position: absolute;
+            color: #1c52db;
+            font-size: 20px;
+            animation: fall linear infinite;
+        }
+        @keyframes fall {
+            to {
+                transform: translateY(100vh);
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>{{ greeting }}</h1>
+    <p>Вот ваш подарок — {{ gift }}! 🎁</p>
+    <img src="{{ url_for('static', filename=image) }}" alt="Подарок">
+    <div class="snowflakes">
+        <div class="snowflake">❅</div>
+        <div class="snowflake">❆</div>
+        <div class="snowflake">❅</div>
+        <div class="snowflake">❆</div>
+        <div class="snowflake">❅</div>
+        <div class="snowflake">❆</div>
+        <div class="snowflake">❅</div>
+        <div class="snowflake">❆</div>
+        <div class="snowflake">❅</div>
+        <div class="snowflake">❆</div>
+    </div>
+    <script>
+        const snowflakes = document.querySelectorAll('.snowflake');
+        snowflakes.forEach((snowflake, index) => {
+            const delay = Math.random() * 5;
+            const duration = Math.random() * 3 + 2;
+            snowflake.style.left = `${Math.random() * 100}vw`;
+            snowflake.style.animationDelay = `${delay}s`;
+            snowflake.style.animationDuration = `${duration}s`;
+        });
+    </script>
+</body>
+</html>

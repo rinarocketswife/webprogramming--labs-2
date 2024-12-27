@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        body {
+            background-color: #f0f0f0;
+            font-family: 'Arial', sans-serif;
+            text-align: center;
+            color: #333;
+        }
+        h1 {
+            color: #c62828; /* Красный */
+        }
+        p {
+            color: #2e7d32; /* Зеленый */
+        }
+        button {
+            background-color: #c62828; /* Красный */
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        button:hover {
+            background-color: #b71c1c; /* Темно-красный */
+        }
+        .snowflakes {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1000;
+        }
+        .snowflake {
+            position: absolute;
+            color: #1c52db;
+            font-size: 20px;
+            animation: fall linear infinite;
+        }
+        @keyframes fall {
+            to {
+                transform: translateY(100vh);
+            }
+        }
+    </style>
+    <title>Выберите предпочтение</title>
+</head>
+<body>
+    <h1>Выберите предпочтение</h1>
+    <form method="POST">
+        {% if preference1 == 'tasty' %}
+            <label><input type="radio" name="preference2" value="sweet" required> Сладкое</label>
+            <label><input type="radio" name="preference2" value="savory" required> Сытное</label>
+        {% else %}
+            <label><input type="radio" name="preference2" value="sweet" required> Цветы</label>
+            <label><input type="radio" name="preference2" value="savory" required> Книга</label>
+        {% endif %}
+        <input type="hidden" name="name" value="{{ name }}">
+        <input type="hidden" name="age" value="{{ age }}">
+        <input type="hidden" name="gender" value="{{ gender }}">
+        <input type="hidden" name="preference1" value="{{ preference1 }}">
+        <button type="submit">Далее</button>
+    </form>
+    <div class="snowflakes">
+        <div class="snowflake">❅</div>
+        <div class="snowflake">❆</div>
+        <div class="snowflake">❅</div>
+        <div class="snowflake">❆</div>
+        <div class="snowflake">❅</div>
+        <div class="snowflake">❆</div>
+        <div class="snowflake">❅</div>
+        <div class="snowflake">❆</div>
+        <div class="snowflake">❅</div>
+        <div class="snowflake">❆</div>
+    </div>
+    <script>
+        const snowflakes = document.querySelectorAll('.snowflake');
+        snowflakes.forEach((snowflake, index) => {
+            const delay = Math.random() * 5;
+            const duration = Math.random() * 3 + 2;
+            snowflake.style.left = `${Math.random() * 100}vw`;
+            snowflake.style.animationDelay = `${delay}s`;
+            snowflake.style.animationDuration = `${duration}s`;
+        });
+    </script>
+</body>
+</html>
