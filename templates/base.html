@@ -3,17 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ирина Проскурякова. {% block lab %}{% endblock %}Лабораторная работа 2</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}">
-    <style>
-        body{
-            {% if request.cookies.get('color') %}
-            color: {{ request.cookies.get('color') }};
-            background_color: {{ request.cookies.get('background_color') }};
-            font-size: {{ request.cookies.get('font-size') }};
-            {% endif %}      
-        }
-    </style>
+    <title>Ирина Проскурякова. {% block lab %}{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='/lab1/main.css') }}">
+    <link rel="icon" href="{{ url_for('static', filename='/lab1/favicon.ico') }}" type="image/x-icon">
+    {% block script %}{% endblock %}
 </head>
 <body>
     <header>
@@ -23,7 +16,7 @@
     <main>
         {% block main %}{% endblock %}
     </main>
-
+    
     <footer>
         &copy; Ирина Проскурякова, ФБИ-24, 3 курс, 2024
     </footer>

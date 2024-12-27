@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <title>Введите имя</title>
     <style>
         body {
-            background-color: #f0f0f0;
             font-family: 'Arial', sans-serif;
             text-align: center;
             color: #333;
@@ -14,40 +14,19 @@
         p {
             color: #2e7d32; /* Зеленый */
         }
-        button {
+        .reset-button {
+            margin-top: 20px;
+            padding: 10px 20px;
             background-color: #c62828; /* Красный */
             color: white;
             border: none;
-            padding: 10px 20px;
-            font-size: 16px;
-            cursor: pointer;
             border-radius: 5px;
+            cursor: pointer;
         }
-        button:hover {
+        .reset-button:hover {
             background-color: #b71c1c; /* Темно-красный */
         }
-        .snowflakes {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 1000;
-        }
-        .snowflake {
-            position: absolute;
-            color: #1c52db;
-            font-size: 20px;
-            animation: fall linear infinite;
-        }
-        @keyframes fall {
-            to {
-                transform: translateY(100vh);
-            }
-        }
     </style>
-    <title>Введите имя</title>
 </head>
 <body>
     <h1>Введите ваше имя</h1>
@@ -55,27 +34,18 @@
         <input type="text" name="name" required>
         <button type="submit">Далее</button>
     </form>
-    <div class="snowflakes">
-        <div class="snowflake">❅</div>
-        <div class="snowflake">❆</div>
-        <div class="snowflake">❅</div>
-        <div class="snowflake">❆</div>
-        <div class="snowflake">❅</div>
-        <div class="snowflake">❆</div>
-        <div class="snowflake">❅</div>
-        <div class="snowflake">❆</div>
-        <div class="snowflake">❅</div>
-        <div class="snowflake">❆</div>
-    </div>
-    <script>
-        const snowflakes = document.querySelectorAll('.snowflake');
-        snowflakes.forEach((snowflake, index) => {
-            const delay = Math.random() * 5;
-            const duration = Math.random() * 3 + 2;
-            snowflake.style.left = `${Math.random() * 100}vw`;
-            snowflake.style.animationDelay = `${delay}s`;
-            snowflake.style.animationDuration = `${duration}s`;
-        });
-    </script>
+
+    {% if name and age and gender and preference1 and preference2 %}
+        <h2>Последние данные:</h2>
+        <p>Имя: {{ name }}</p>
+        <p>Возраст: {{ age }}</p>
+        <p>Пол: {{ gender }}</p>
+        <p>Предпочтение 1: {{ preference1 }}</p>
+        <p>Предпочтение 2: {{ preference2 }}</p>
+    {% endif %}
+
+    <form action="{{ url_for('lab9.index') }}" method="GET">
+        <button type="submit" class="reset-button">Начать заново</button>
+    </form>
 </body>
 </html>
